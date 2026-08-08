@@ -3,162 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text Layout Analysis & Multi-Dimensional Dataset</title>
+    <title>GSE Multi-Grade Mathematics Assessment Tool</title>
     <style>
-        * { box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 0; background-color: #f0f2f5; color: #2d3748; display: flex; height: 100vh; overflow: hidden; }
+        body { font-family: 'Courier New', Courier, monospace; background-color: #f4f6f8; color: #333; margin: 0; padding: 20px; text-align: center; }
+        .container { max-width: 700px; margin: 30px auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid #d1d5db; text-align: left; }
+        h1 { font-size: 22px; color: #0076ff; border-bottom: 2px solid #edf2f7; padding-bottom: 10px; margin-top: 0; }
         
-        /* Dashboard Catalog Sidebar Navigation column */
-        .sidebar { width: 280px; background: #ffffff; border-right: 1px solid #e2e8f0; display: flex; flex-direction: column; padding: 20px; z-index: 10; }
-        .sidebar h2 { font-size: 16px; margin-top: 0; color: #4a5568; border-bottom: 2px solid #edf2f7; padding-bottom: 10px; font-family: monospace; text-transform: uppercase; letter-spacing: 1px; }
-        .book-item { padding: 14px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; margin-bottom: 12px; cursor: pointer; font-size: 13px; font-weight: bold; transition: all 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.02); }
-        .book-item:hover { background: #edf2f7; border-color: #0076ff; color: #0076ff; }
+        /* Selector design elements */
+        label { font-weight: bold; font-size: 14px; color: #4b5563; display: block; margin-bottom: 8px; }
+        select { width: 100%; padding: 12px; font-size: 15px; font-family: monospace; border: 1px solid #cbd5e1; border-radius: 4px; background: #fff; margin-bottom: 20px; cursor: pointer; }
         
-        /* Book Rendering Arena Setup with Realistic 3D Flipping Views */
-        .book-arena { flex: 1; display: flex; flex-direction: column; height: 100vh; background: #e4e7eb; position: relative; }
-        .toolbar { height: 60px; background: #ffffff; border-bottom: 1px solid #d9dce0; display: flex; align-items: center; justify-content: space-between; padding: 0 30px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-        .title-display { font-weight: bold; color: #4a5568; font-family: monospace; }
-        .tools button { background: white; border: 1px solid #cbd5e1; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-weight: bold; margin-left: 5px; font-size: 12px; }
-        .tools button:hover { background: #f1f5f9; border-color: #a0aec0; }
-
-        /* The 3D Book Layout Container Box */
-        .book-wrapper { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px; perspective: 1500px; }
-        .book-container { width: 100%; max-width: 900px; height: 100%; max-height: 600px; background: #fbfbf8; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); display: flex; position: relative; transform-style: preserve-3d; transition: transform 0.5s; border: 1px solid #d4d4d2; }
-        
-        /* Middle Book Binding Line Vector */
-        .book-container::before { content: ''; position: absolute; left: 50%; top: 0; width: 2px; height: 100%; background: linear-gradient(to right, rgba(0,0,0,0.15), rgba(255,255,255,0.1), rgba(0,0,0,0.15)); z-index: 5; }
-
-        /* Page Layout Formatting Panels */
-        .page { width: 50%; height: 100%; padding: 45px 50px; overflow-y: auto; line-height: 1.8; font-size: 17px; background: #fbfbf8; position: relative; text-align: left; }
-        .left-page { border-radius: 4px 0 0 4px; border-right: 1px solid rgba(0,0,0,0.05); }
-        .right-page { border-radius: 0 4px 4px 0; }
-        
-        /* Animated Turning Page Effect Engine */
-        .flip-action { animation: flipPageEffect 0.6s ease-in-out; }
-        @keyframes flipPageEffect {
-            0% { transform: rotateY(0deg); opacity: 1; }
-            50% { transform: rotateY(-90deg); opacity: 0.5; }
-            100% { transform: rotateY(0deg); opacity: 1; }
-        }
-
-        /* Nav Action Footer Bar UI */
-        .nav-footer { height: 60px; background: #ffffff; border-top: 1px solid #d9dce0; display: flex; align-items: center; justify-content: center; gap: 20px; }
-        .nav-btn { background: #24292e; color: white; border: none; padding: 8px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; }
-        .nav-btn:hover { background: #0076ff; }
-        
-        /* Night Mode Styling Variables Overrides */
-        .theme-dark { background-color: #11141a !important; color: #e2e8f0 !important; }
-        .theme-dark .sidebar, .theme-dark .toolbar, .theme-dark .nav-footer { background-color: #1a1f2c !important; border-color: #2d3748 !important; color: white !important; }
-        .theme-dark .book-item { background-color: #2d3748 !important; border-color: #4a5568 !important; color: white !important; }
-        .theme-dark .book-container, .theme-dark .page { background-color: #13161c !important; color: #cbd5e1 !important; border-color: #2d3748 !important; }
+        .standard-tag { background: #e1effe; color: #1e429f; font-size: 12px; font-weight: bold; padding: 4px 8px; border-radius: 4px; display: inline-block; margin-bottom: 15px; }
+        .problem-box { background: #f9fafb; border-left: 4px solid #0076ff; padding: 20px; font-size: 18px; line-height: 1.6; margin-bottom: 20px; min-height: 80px; }
+        button { background: #0076ff; color: white; border: none; padding: 12px 16px; font-size: 15px; cursor: pointer; border-radius: 4px; font-weight: bold; width: 100%; margin-bottom: 15px; }
+        button:hover { background: #0056b3; }
+        .submit-btn { background: #238636; }
+        .submit-btn:hover { background: #2ea043; }
+        input[type="text"] { width: 100%; padding: 12px; font-size: 16px; border: 1px solid #cbd5e1; border-radius: 4px; box-sizing: border-box; margin-bottom: 15px; font-family: monospace; }
+        .feedback { font-weight: bold; font-size: 16px; margin-top: 10px; min-height: 25px; }
+        .back-link { display: inline-block; margin-top: 20px; color: #0076ff; text-decoration: none; font-size: 13px; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <!-- CATALOG SIDEBAR COLUMN -->
-    <div class="sidebar" id="sidebar">
-        <h2>Library Indexes</h2>
-        <p style="font-size: 11px; color:#a0aec0; margin-bottom: 20px; font-family: monospace;">Select a system module book node to initialize rendering data.</p>
+    <div class="container">
+        <h1>GSE Target Standards Learning & Assessment Engine</h1>
+        <p style="font-size: 13px; color: #666; margin-bottom: 20px;">Configure the selector node matrix below to target specific academic grade level algorithms.</p>
         
-        <div class="book-item" onclick="loadSelectedBook('Among the Hidden', shadowChildrenData)">🌳 Book 1: Among the Hidden</div>
-        <div class="book-item" onclick="loadSelectedBook('The Red Pyramid', kaneChroniclesData)">🔺 Book 2: The Red Pyramid</div>
-    </div>
+        <!-- THE GRADE SELECTION DROP DOWN MENU -->
+        <label for="gradeSelector">Select System Framework Parameter:</label>
+        <select id="gradeSelector" onchange="updateGradeContext()">
+            <option value="grade3">Grade 3 Framework (Arithmetic Mastery)</option>
+            <option value="grade6">Grade 6 Framework (Ratios & Fractions)</option>
+            <option value="grade8">Grade 8 Framework (Linear Functions)</option>
+            <option value="algebra">High School Tier 1 (Algebra Linear Functions)</option>
+        </select>
 
-    <!-- MAIN READING CANVAS ARENA -->
-    <div class="book-arena">
-        <div class="toolbar">
-            <div class="title-display" id="activeTitle">System Standby: No Book Compiled</div>
-            <div class="tools">
-                <button onclick="changeTextScale(1)">Text A+</button>
-                <button onclick="changeTextScale(-1)">Text A-</button>
-                <button onclick="toggleVisualTheme()">☀️/🌙 Dark Mode</button>
-            </div>
-        </div>
+        <div id="standardLabel" class="standard-tag">Active Alignment Code: GSE-MGSE3.OA.7</div>
         
-        <!-- The Realistic Open Book Component -->
-        <div class="book-wrapper">
-            <div class="book-container" id="bookCanvas">
-                <!-- Left Page Column View -->
-                <div class="page left-page" id="leftPageArea">
-                    Select a core book from the dashboard index on the left to compile dataset vectors into the viewing canvas frames.
-                </div>
-                <!-- Right Page Column View -->
-                <div class="page right-page" id="rightPageArea">
-                    Use the navigation tracking footer controls to flip pages seamlessly across data arrays.
-                </div>
-            </div>
-        </div>
+        <!-- ENGINE INTERACTION LAYOUT -->
+        <button onclick="generateProblemMatrix()">Generate Dynamic Problem</button>
 
-        <!-- PAGE NAVIGATION INTERFACE -->
-        <div class="nav-footer">
-            <button class="nav-btn" onclick="executePageTurn(-1)">◀ Previous Page</button>
-            <span style="font-family: monospace; font-weight: bold; color: #718096;" id="pageIndicator">Page 0/0</span>
-            <button class="nav-btn" onclick="executePageTurn(1)">Next Page ▶</button>
-        </div>
+        <!-- PROBLEM RENDER CONTAINER -->
+        <div class="problem-box" id="problemDisplay">Select a target grade framework parameter from the drop-down menu above to load the variable arrays.</div>
+
+        <!-- VERIFICATION HOOK -->
+        <input type="text" id="userAnswer" placeholder="Type your computed value result here...">
+        <button class="submit-btn" onclick="checkAnswerQuery()">Submit Assessment Query</button>
+        
+        <div class="feedback" id="feedbackDisplay"></div>
+
+        <a href="../" class="back-link">← Return to System Hub Menu</a>
     </div>
 
     <script>
-        // --- 1. CORE ENGINE CONTROLLERS ---
-        let currentScaleSize = 17;
-        let activeBookPagesArray = [];
-        let activePageIndexPointer = 0;
+        let currentTargetAnswer = null;
 
-        function changeTextScale(direction) {
-            currentScaleSize += direction * 2;
-            if(currentScaleSize < 12) currentScaleSize = 12;
-            if(currentScaleSize > 28) currentScaleSize = 28;
-            document.getElementById('leftPageArea').style.fontSize = currentScaleSize + 'px';
-            document.getElementById('rightPageArea').style.fontSize = currentScaleSize + 'px';
-        }
+        // Run setup when the page boots up initially
+        window.onload = function() {
+            updateGradeContext();
+        };
 
-        function toggleVisualTheme() {
-            document.body.classList.toggle('theme-dark');
-        }
-
-        function loadSelectedBook(title, bookPages) {
-            document.getElementById('activeTitle').innerText = "Active Matrix: " + title;
-            activeBookPagesArray = bookPages;
-            activePageIndexPointer = 0;
-            renderPageLayout();
-        }
-
-        function renderPageLayout() {
-            const leftPage = document.getElementById('leftPageArea');
-            const rightPage = document.getElementById('rightPageArea');
-            const bookCanvas = document.getElementById('bookCanvas');
-
-            // Apply realistic CSS transform flip reset trigger
-            bookCanvas.classList.remove('flip-action');
-            void bookCanvas.offsetWidth; // Force hardware redraw cycle
-            bookCanvas.classList.add('flip-action');
-
-            // Map data items into the double column sheet grids
-            leftPage.innerHTML = activeBookPagesArray[activePageIndexPointer] || "";
-            rightPage.innerHTML = activeBookPagesArray[activePageIndexPointer + 1] || "<em style='color:#a0aec0'>[End of Compiled Document Segment]</em>";
-
-            // Track page positions cleanly
-            let displayPageNum = Math.floor(activePageIndexPointer / 2) + 1;
-            let totalPagesNum = Math.ceil(activeBookPagesArray.length / 2);
-            document.getElementById('pageIndicator').innerText = "Page " + displayPageNum + " / " + totalPagesNum;
+        function updateGradeContext() {
+            const selector = document.getElementById('gradeSelector').value;
+            const label = document.getElementById('standardLabel');
             
-            // Scroll pages back to top index securely
-            leftPage.scrollTop = 0;
-            rightPage.scrollTop = 0;
+            // Map standard labeling nodes to the UI framework display text
+            if (selector === 'grade3') label.innerText = "Active Alignment Code: MGSE3.OA.7 (Multiplication Properties)";
+            if (selector === 'grade6') label.innerText = "Active Alignment Code: MGSE6.RP.3 (Ratio Matrix & Percentages)";
+            if (selector === 'grade8') label.innerText = "Active Alignment Code: MGSE8.EE.7 (Complex Linear Operations)";
+            if (selector === 'algebra') label.innerText = "Active Alignment Code: MGSE9-12.A.REI.3 (Single Variable Isolation)";
+            
+            generateProblemMatrix();
         }
 
-        function executePageTurn(direction) {
-            if (activeBookPagesArray.length === 0) return;
+        function generateProblemMatrix() {
+            document.getElementById('userAnswer').value = "";
+            document.getElementById('feedbackDisplay').innerText = "";
+            const display = document.getElementById('problemDisplay');
+            const selector = document.getElementById('gradeSelector').value;
             
-            // Step by 2 since we load 2 pages inside our view grid at once
-            let destinationPointer = activePageIndexPointer + (direction * 2);
+            // --- 3RD GRADE LOGIC ARRAY ---
+            if (selector === 'grade3') {
+                let factorA = Math.floor(Math.random() * 8) + 2; // 2-9
+                let factorB = Math.floor(Math.random() * 9) + 1; // 1-9
+                display.innerHTML = `Determine the missing factor variable value:<br><br><b>${factorA} &times; n = ${factorA * factorB}</b>`;
+                currentTargetAnswer = factorB.toString();
+            } 
             
-            if (destinationPointer >= 0 && destinationPointer < activeBookPagesArray.length) {
-                activePageIndexPointer = destinationPointer;
-                renderPageLayout();
+            // --- 6TH GRADE LOGIC ARRAY ---
+            else if (selector === 'grade6') {
+                let values = [10, 20, 25, 50];
+                let chosenPercent = values[Math.floor(Math.random() * values.length)];
+                let baseNumber = (Math.floor(Math.random() * 5) + 1) * 100; // 100, 200, 300 etc.
+                let answer = (chosenPercent / 100) * baseNumber;
+                display.innerHTML = `Calculate the targeted statistical percentage calculation:<br><br>What is <b>${chosenPercent}%</b> of <b>${baseNumber}</b>?`;
+                currentTargetAnswer = answer.toString();
+            } 
+            
+            // --- 8TH GRADE LOGIC ARRAY ---
+            else if (selector === 'grade8') {
+                let a = Math.floor(Math.random() * 6) + 2;
+                let x = Math.floor(Math.random() * 8) + 1;
+                let b = Math.floor(Math.random() * 12) + 1;
+                let c = (a * x) + b;
+                display.innerHTML = `Isolate the variable value for x:<br><br><b>${a}x + ${b} = ${c}</b>`;
+                currentTargetAnswer = x.toString();
+            } 
+            
+            // --- HIGH SCHOOL ALGEBRA LOGIC ARRAY ---
+            else if (selector === 'algebra') {
+                let multiplier = Math.floor(Math.random() * 4) + 2; // 2-5
+                let xValue = Math.floor(Math.random() * 6) + 1;
+                let rightSideVal = Math.floor(Math.random() * 10) + 5;
+                let leftConstant = rightSideVal - (multiplier * xValue);
+                
+                // Formulates equations like: multiplier * x + leftConstant = rightSideVal
+                let signStr = leftConstant >= 0 ? "+ " + leftConstant : "- " + Math.abs(leftConstant);
+                display.innerHTML = `Solve the algebraic matrix argument expression for x:<br><br><b>${multiplier}x ${signStr} = ${rightSideVal}</b>`;
+                currentTargetAnswer = xValue.toString();
             }
         }
 
-        // --- 2. COMPLETE UNBLOCKED CORE DATA ARRAYS ---
-        // Among the Hidden Chapters Chunks
-        const shadowChildrenData = [
-            `<h3>Among the Hidden - Chapter 1</h3><p>He saw the first tree topple from the kitchen window. It fell down crashing through the brush, its giant roots ripping out of the soft black dirt. Luke felt a cold hand squeeze his chest. He had lived all his twelve years knowing that he must never be seen. But the trees had always been his shield.</p>`,
+        function checkAnswerQuery() {
+            const userInput = document.getElementById('userAnswer').value.trim();
+            const feedback = document.getElementById('feedbackDisplay');
+            
+            if (!currentTargetAnswer) return;
+
+            if (userInput === currentTargetAnswer) {
+                feedback.innerText = "🎯 Verification Success: Input matching data coordinates.";
+                feedback.style.color = "green";
+            } else {
+                feedback.innerText = `❌ Verification Exception: Target calibration constant was: ${currentTargetAnswer}`;
+                feedback.style.color = "red";
+            }
+        }
+    </script>
+</body>
+</html>
