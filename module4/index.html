@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GSE Comprehensive K-12+ Mathematics Assessment Engine</title>
+    <title>GSE Matrix Mathematics Core Curriculum Analyzer</title>
     <style>
         body { font-family: 'Courier New', Courier, monospace; background-color: #f4f6f8; color: #333; margin: 0; padding: 20px; text-align: center; }
-        .container { max-width: 750px; margin: 30px auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid #d1d5db; text-align: left; }
+        .container { max-width: 800px; margin: 20px auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid #d1d5db; text-align: left; }
         h1 { font-size: 22px; color: #0076ff; border-bottom: 2px solid #edf2f7; padding-bottom: 10px; margin-top: 0; }
-        label { font-weight: bold; font-size: 14px; color: #4b5563; display: block; margin-bottom: 8px; }
-        select { width: 100%; padding: 12px; font-size: 15px; font-family: monospace; border: 1px solid #cbd5e1; border-radius: 4px; background: #fff; margin-bottom: 20px; cursor: pointer; }
-        .standard-tag { background: #e1effe; color: #1e429f; font-size: 12px; font-weight: bold; padding: 4px 8px; border-radius: 4px; display: inline-block; margin-bottom: 15px; }
-        .problem-box { background: #f9fafb; border-left: 4px solid #0076ff; padding: 20px; font-size: 18px; line-height: 1.6; margin-bottom: 20px; min-height: 80px; }
+        .selector-group { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        label { font-weight: bold; font-size: 13px; color: #4b5563; display: block; margin-bottom: 6px; text-transform: uppercase; }
+        select { width: 100%; padding: 12px; font-size: 14px; font-family: monospace; border: 1px solid #cbd5e1; border-radius: 4px; background: #fff; cursor: pointer; }
+        .standard-tag { background: #e1effe; color: #1e429f; font-size: 12px; font-weight: bold; padding: 6px 10px; border-radius: 4px; display: inline-block; margin-bottom: 15px; }
+        .problem-box { background: #f9fafb; border-left: 4px solid #0076ff; padding: 25px; font-size: 18px; line-height: 1.6; margin-bottom: 20px; min-height: 100px; }
         button { background: #0076ff; color: white; border: none; padding: 12px 16px; font-size: 15px; cursor: pointer; border-radius: 4px; font-weight: bold; width: 100%; margin-bottom: 15px; }
         button:hover { background: #0056b3; }
         .submit-btn { background: #238636; }
@@ -25,36 +26,45 @@
 
     <div class="container">
         <h1>GSE Target Standards Learning & Assessment Engine</h1>
-        <p style="font-size: 13px; color: #666; margin-bottom: 20px;">Configure the selector node matrix below to target specific academic grade level algorithms.</p>
+        <p style="font-size: 12px; color: #666; margin-bottom: 25px;">Configure the multi-tiered parameter grid dropdowns below to choose the targeted curriculum unit index vectors.</p>
         
-        <!-- COMPREHENSIVE K-12+ DROP-DOWN MENU -->
-        <label for="gradeSelector">Select System Framework Parameter:</label>
-        <select id="gradeSelector" onchange="updateGradeContext()">
-            <option value="kindergarten">Kindergarten Framework (Cardinality & Counting)</option>
-            <option value="grade1">Grade 1 Framework (Base Ten Addition)</option>
-            <option value="grade2">Grade 2 Framework (Base Ten Subtraction)</option>
-            <option value="grade3">Grade 3 Framework (Arithmetic Mastery)</option>
-            <option value="grade4">Grade 4 Framework (Multi-Digit Operations)</option>
-            <option value="grade5">Grade 5 Framework (Fractional Products)</option>
-            <option value="grade6">Grade 6 Framework (Ratios & Percentages)</option>
-            <option value="grade7">Grade 7 Framework (Rational Integers)</option>
-            <option value="grade8">Grade 8 Framework (Linear Functions)</option>
-            <option value="algebra1">High School Tier 1 (Algebra Vector Isolation)</option>
-            <option value="geometry">High School Tier 2 (Geometric Dimension Assessment)</option>
-            <option value="algebra2">High School Tier 3 (Polynomial Matrix Sets)</option>
-            <option value="calculus">Advanced Placement / Higher Ed (Differential Calculus)</option>
-        </select>
+        <!-- DOUBLE SELECTOR CONTROLS LAYER -->
+        <div class="selector-group">
+            <div>
+                <label for="gradeSelect">1. Target Grade Level:</label>
+                <select id="gradeSelect" onchange="populateUnitOptions()">
+                    <option value="K">Kindergarten (GSE Primary)</option>
+                    <option value="G1">Grade 1 Core Curriculum</option>
+                    <option value="G2">Grade 2 Core Curriculum</option>
+                    <option value="G3">Grade 3 Core Curriculum</option>
+                    <option value="G4">Grade 4 Core Curriculum</option>
+                    <option value="G5">Grade 5 Core Curriculum</option>
+                    <option value="G6">Grade 6 Core Curriculum</option>
+                    <option value="G7">Grade 7 Core Curriculum</option>
+                    <option value="G8">Grade 8 Core Curriculum</option>
+                    <option value="HS_ALG">High School Tier: Algebra 1</option>
+                    <option value="HS_GEO">High School Tier: Geometry</option>
+                    <option value="HS_CALC">Advanced Placement: Calculus</option>
+                </select>
+            </div>
+            <div>
+                <label for="unitSelect">2. Curriculum Unit Module:</label>
+                <select id="unitSelect" onchange="updateSystemState()">
+                    <!-- Populated dynamically via JS arrays -->
+                </select>
+            </div>
+        </div>
 
-        <div id="standardLabel" class="standard-tag">Active Alignment Code: GSE-GK.CC.4</div>
+        <div id="standardLabel" class="standard-tag">Active Alignment Code: Initializing...</div>
         
-        <button onclick="generateProblemMatrix()">Generate Dynamic Problem</button>
+        <button onclick="computeDynamicProblem()">Generate Dynamic Target Problem</button>
 
-        <!-- PROBLEM AREA -->
-        <div class="problem-box" id="problemDisplay">Select a system index parameter to run the calculations.</div>
+        <!-- PROBLEM FIELD -->
+        <div class="problem-box" id="problemDisplay">Select options above and launch the calculation thread.</div>
 
-        <!-- INPUT AND VALIDATION -->
-        <input type="text" id="userAnswer" placeholder="Type your computed value result here...">
-        <button class="submit-btn" onclick="checkAnswerQuery()">Submit Assessment Query</button>
+        <!-- INPUT ENTRY HOOK -->
+        <input type="text" id="userAnswer" placeholder="Type your final computed numerical answer value here...">
+        <button class="submit-btn" onclick="validateUserResponse()">Submit Evaluation Matrix Query</button>
         
         <div class="feedback" id="feedbackDisplay"></div>
 
@@ -62,84 +72,82 @@
     </div>
 
     <script>
-        let currentTargetAnswer = null;
-
-        window.onload = function() {
-            updateGradeContext();
+        // --- 1. DETAILED MATRIX MAPPING DATASETS FOR ALL UNITS ---
+        const curriculumDatabase = {
+            K: [
+                { id: "u1", code: "GK.CC.1", name: "Unit 1: Count Sequences to 100", algo: "countSeq" },
+                { id: "u2", code: "GK.CC.4", name: "Unit 2: Object Set Cardinality", algo: "cardinal" },
+                { id: "u3", code: "GK.OA.1", name: "Unit 3: Addition Concept Modeling", algo: "kAdd" }
+            ],
+            G1: [
+                { id: "u1", code: "MGSE1.OA.1", name: "Unit 1: Word Problem Arithmetic", algo: "g1Word" },
+                { id: "u2", code: "MGSE1.NBT.2", name: "Unit 2: Tens & Ones Grid Structures", algo: "g1BaseTen" },
+                { id: "u3", code: "MGSE1.MD.3", name: "Unit 3: Tell Time (Hours & Half)", algo: "g1Time" }
+            ],
+            G2: [
+                { id: "u1", code: "MGSE2.NBT.5", name: "Unit 1: Fluency Sums within 100", algo: "g2Add" },
+                { id: "u2", code: "MGSE2.MD.1", name: "Unit 2: Measurement Constraints", algo: "g2Measure" },
+                { id: "u3", code: "MGSE2.G.1", name: "Unit 3: Geometric Feature Attributes", algo: "g2Geom" }
+            ],
+            G3: [
+                { id: "u1", code: "MGSE3.OA.1", name: "Unit 1: Products Array Matrix", algo: "g3Mult" },
+                { id: "u2", code: "MGSE3.NF.1", name: "Unit 2: Part-Whole Fraction Ratios", algo: "g3Frac" },
+                { id: "u3", code: "MGSE3.MD.5", name: "Unit 3: Area/Perimeter Geometry", algo: "g3Area" }
+            ],
+            G4: [
+                { id: "u1", code: "MGSE4.NBT.5", name: "Unit 1: Multi-Digit Factors", algo: "g4Factors" },
+                { id: "u2", code: "MGSE4.NF.3", name: "Unit 2: Equivalent Fractions Adding", algo: "g4FracAdd" },
+                { id: "u3", code: "MGSE4.MD.5", name: "Unit 3: Angular Degree Measures", algo: "g4Angles" }
+            ],
+            G5: [
+                { id: "u1", code: "MGSE5.NBT.7", name: "Unit 1: Decimal Variable Sums", algo: "g5Decimals" },
+                { id: "u2", code: "MGSE5.NF.4", name: "Unit 2: Fraction Multiplication Arrays", algo: "g5FracMult" },
+                { id: "u3", code: "MGSE5.MD.5", name: "Unit 3: Three-Dimensional Volume Spatial", algo: "g5Volume" }
+            ],
+            G6: [
+                { id: "u1", code: "MGSE6.RP.3", name: "Unit 1: Ratio Scaling & Percentages", algo: "g6Ratios" },
+                { id: "u2", code: "MGSE6.NS.1", name: "Unit 2: Fraction Divisor Fractions", algo: "g6DivFrac" },
+                { id: "u3", code: "MGSE6.EE.2", name: "Unit 3: Expressions & Variable Balance", algo: "g6Algebra" }
+            ],
+            G7: [
+                { id: "u1", code: "MGSE7.NS.1", name: "Unit 1: Rational Number Signs Operations", algo: "g7Rational" },
+                { id: "u2", code: "MGSE7.RP.2", name: "Unit 2: Proportional Core Constants", algo: "g7Proportion" },
+                { id: "u3", code: "MGSE7.G.4", name: "Unit 3: Circle Circumference & Radius", algo: "g7Circles" }
+            ],
+            G8: [
+                { id: "u1", code: "MGSE8.EE.1", name: "Unit 1: Radical Exponent Laws", algo: "g8Exponents" },
+                { id: "u2", code: "MGSE8.EE.7", name: "Unit 2: Complex Linear Group Equations", algo: "g8Equations" },
+                { id: "u3", code: "MGSE8.G.7", name: "Unit 3: Pythagorean System Triangles", algo: "g8Pythag" }
+            ],
+            HS_ALG: [
+                { id: "u1", code: "MGSE9-12.A.SSE.1", name: "Unit 1: Structural Expression Factoring", algo: "hsAlgFact" },
+                { id: "u2", code: "MGSE9-12.A.REI.3", name: "Unit 2: Multi-Step Variable Balancing", algo: "hsAlgSolve" },
+                { id: "u3", code: "MGSE9-12.F.IF.4", name: "Unit 3: Linear Intercept Coordinates", algo: "hsAlgIntercept" }
+            ],
+            HS_GEO: [
+                { id: "u1", code: "MGSE9-12.G.CO.1", name: "Unit 1: Rigid Transformations Reflection", algo: "hsGeoTransform" },
+                { id: "u2", code: "MGSE9-12.G.SRT.8", name: "Unit 2: Trigonometric Right Triangles", algo: "hsGeoTrig" },
+                { id: "u3", code: "MGSE9-12.G.GMD.3", name: "Unit 3: Cylinder Cone Geometric Volumes", algo: "hsGeoVolume" }
+            ],
+            HS_CALC: [
+                { id: "u1", code: "AP.CALC.1", name: "Unit 1: Continuous Function Limits", algo: "calcLimits" },
+                { id: "u2", code: "AP.CALC.2", name: "Unit 2: Differential Power Rule Notation", algo: "calcPowerRule" },
+                { id: "u3", code: "AP.CALC.3", name: "Unit 3: Indefinite Integral Anti-Derivatives", algo: "calcIntegral" }
+            ]
         };
 
-        function updateGradeContext() {
-            const selector = document.getElementById('gradeSelector').value;
-            const label = document.getElementById('standardLabel');
-            
-            if (selector === 'kindergarten') label.innerText = "Active Alignment Code: GK.CC.4 (Cardinality Structures)";
-            if (selector === 'grade1') label.innerText = "Active Alignment Code: MGSE1.NBT.4 (Base Ten Summation)";
-            if (selector === 'grade2') label.innerText = "Active Alignment Code: MGSE2.NBT.5 (Fluency Deviations)";
-            if (selector === 'grade3') label.innerText = "Active Alignment Code: MGSE3.OA.7 (Multiplication Properties)";
-            if (selector === 'grade4') label.innerText = "Active Alignment Code: MGSE4.NBT.5 (Multi-Digit Factors)";
-            if (selector === 'grade5') label.innerText = "Active Alignment Code: MGSE5.NF.4 (Fractional Quantities)";
-            if (selector === 'grade6') label.innerText = "Active Alignment Code: MGSE6.RP.3 (Ratio Matrix & Percentages)";
-            if (selector === 'grade7') label.innerText = "Active Alignment Code: MGSE7.NS.1 (Rational Signs Operations)";
-            if (selector === 'grade8') label.innerText = "Active Alignment Code: MGSE8.EE.7 (Complex Linear Operations)";
-            if (selector === 'algebra1') label.innerText = "Active Alignment Code: MGSE9-12.A.REI.3 (Single Variable Isolation)";
-            if (selector === 'geometry') label.innerText = "Active Alignment Code: MGSE9-12.G.SRT.8 (Trigonometric Ratios)";
-            if (selector === 'algebra2') label.innerText = "Active Alignment Code: MGSE9-12.A.APR.2 (Polynomial Remainder Theorem)";
-            if (selector === 'calculus') label.innerText = "Advanced Placement Alignment: Calculus AB (Power Rule Derivative Elements)";
-            
-            generateProblemMatrix();
-        }
+        let currentActiveAnswer = null;
 
-        function generateProblemMatrix() {
-            document.getElementById('userAnswer').value = "";
-            document.getElementById('feedbackDisplay').innerText = "";
-            const display = document.getElementById('problemDisplay');
-            const selector = document.getElementById('gradeSelector').value;
-            
-            if (selector === 'kindergarten') {
-                let dots = Math.floor(Math.random() * 6) + 4; // 4 to 9
-                let symbolString = "● ".repeat(dots);
-                display.innerHTML = `Count the absolute total structural matrix entities in the set:<br><br><span style="font-size: 24px; color: #0076ff;">${symbolString}</span>`;
-                currentTargetAnswer = dots.toString();
-            }
-            else if (selector === 'grade1') {
-                let base = Math.floor(Math.random() * 40) + 10;
-                let add = Math.floor(Math.random() * 9) + 1;
-                display.innerHTML = `Calculate the total base-ten summation value:<br><br><b>${base} + ${add} = ?</b>`;
-                currentTargetAnswer = (base + add).toString();
-            }
-            else if (selector === 'grade2') {
-                let base = Math.floor(Math.random() * 50) + 40;
-                let sub = Math.floor(Math.random() * 25) + 5;
-                display.innerHTML = `Compute the tracking baseline deduction array:<br><br><b>${base} - ${sub} = ?</b>`;
-                currentTargetAnswer = (base - sub).toString();
-            }
-            else if (selector === 'grade3') {
-                let factorA = Math.floor(Math.random() * 8) + 2;
-                let factorB = Math.floor(Math.random() * 9) + 1;
-                display.innerHTML = `Determine the missing factor variable value:<br><br><b>${factorA} &times; n = ${factorA * factorB}</b>`;
-                currentTargetAnswer = factorB.toString();
-            }
-            else if (selector === 'grade4') {
-                let valA = Math.floor(Math.random() * 40) + 11;
-                let valB = Math.floor(Math.random() * 7) + 3;
-                display.innerHTML = `Execute the compound multi-digit factors algorithm:<br><br><b>${valA} &times; ${valB} = ?</b>`;
-                currentTargetAnswer = (valA * valB).toString();
-            }
-            else if (selector === 'grade5') {
-                let num = Math.floor(Math.random() * 5) + 2;
-                let den = num + Math.floor(Math.random() * 3) + 1;
-                let whole = den * (Math.floor(Math.random() * 5) + 2);
-                let answer = (num / den) * whole;
-                display.innerHTML = `Evaluate the fractional structural product quantity:<br><br>What is <b>(${num}/${den})</b> of <b>${whole}</b>?`;
-                currentTargetAnswer = answer.toString();
-            }
-            else if (selector === 'grade6') {
-                let values =;
-                let chosenPercent = values[Math.floor(Math.random() * values.length)];
-                let baseNumber = (Math.floor(Math.random() * 5) + 1) * 100;
-                let answer = (chosenPercent / 100) * baseNumber;
-                display.innerHTML = `Calculate the targeted statistical percentage calculation:<br><br>What is <b>${chosenPercent}%</b> of <b>${baseNumber}</b>?`;
-                currentTargetAnswer = answer.toString();
-            }
-            else if (selector === 'grade7') {
-                let valA = (Math.floor(Math.random() * 15) + 5) * -1; // Negative integer
+        window.onload = function() {
+            populateUnitOptions();
+        };
+
+        // --- 2. DROPDOWN MAPPING ARCHITECTURE ---
+        function populateUnitOptions() {
+            const grade = document.getElementById('gradeSelect').value;
+            const unitSelect = document.getElementById('unitSelect');
+            unitSelect.innerHTML = ""; // Clear active items
+
+            curriculumDatabase[grade].forEach(unit => {
+                let opt = document.createElement('option');
+                opt.value = unit.algo;
