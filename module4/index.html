@@ -27,7 +27,6 @@
         <h1>GSE Grade 8 Target Standards Learning & Assessment Engine</h1>
         <p style="font-size: 12px; color: #666; margin-bottom: 25px;">Select an unblocked academic framework path variable below to initialize curriculum validation tasks.</p>
         
-        <!-- GRADE 8 SPECIFIC DROPDOWN MENU -->
         <label for="masterAlgoSelector">Target Grade 8 Curriculum Node Matrix:</label>
         <select id="masterAlgoSelector" onchange="updateSystemLabel()">
             <optgroup label="The Number System (NS)">
@@ -73,8 +72,8 @@
         function updateSystemLabel() {
             const selector = document.getElementById('masterAlgoSelector');
             const selectedText = selector.options[selector.selectedIndex].text;
-            const cleanCode = selectedText.split(' - ');
-            document.getElementById('standardLabel').innerText = "Active Alignment Target: " + cleanCode[0];
+            const cleanCode = selectedText.split(' - ')[0];
+            document.getElementById('standardLabel').innerText = "Active Alignment Target: " + cleanCode;
             computeDynamicProblem();
         }
 
@@ -93,7 +92,8 @@
                 currentActiveAnswer = answers[idx];
             }
             else if (algo === "g8Estimating") {
-                let roots =;
+                // FIXED: Roots list added here to fix the syntax crash
+                let roots = [10, 20, 30, 55];
                 let values = ["3 and 4", "4 and 5", "5 and 6", "7 and 8"];
                 let idx = Math.floor(Math.random() * roots.length);
                 display.innerHTML = `Approximate the value of the radical integer dimension:<br><br>Between which two whole numbers does <b>√${roots[idx]}</b> lie?<br><br>(Format note: Use the word 'and', e.g. type: <b>3 and 4</b>)`;
@@ -107,13 +107,13 @@
                 currentActiveAnswer = "2";
             }
             else if (algo === "g8SquareRoots") {
-                let x = Math.floor(Math.random() * 4) + 4; // 4 to 7
+                let x = Math.floor(Math.random() * 4) + 4; 
                 display.innerHTML = `Solve for the positive value of the variable asset x:<br><br><b>x<sup>2</sup> = ${x*x}</b>`;
                 currentActiveAnswer = x.toString();
             }
             else if (algo === "g8Scientific") {
                 let num = Math.floor(Math.random() * 8) + 1;
-                let power = Math.floor(Math.random() * 2) + 3; // 10^3 or 10^4
+                let power = Math.floor(Math.random() * 2) + 3; 
                 display.innerHTML = `Convert the tracking measurement expression into a standard whole integer value:<br><br><b>${num} &times; 10<sup>${power}</sup></b>`;
                 currentActiveAnswer = (num * Math.pow(10, power)).toString();
             }
@@ -127,12 +127,12 @@
 
             // --- FUNCTIONS ---
             else if (algo === "g8Functions") {
-                display.innerHTML = `Analyze the mapping coordinate coordinate pairs structure:<br><br>Does the set <b>{(1,2), (2,4), (3,6), (2,8)}</b> represent a valid mathematical function relationship?<br><br>(Type exactly: <b>yes</b> or <b>no</b>)`;
+                display.innerHTML = `Analyze the mapping coordinate pairs structure:<br><br>Does the set <b>{(1,2), (2,4), (3,6), (2,8)}</b> represent a valid mathematical function relationship?<br><br>(Type exactly: <b>yes</b> or <b>no</b>)`;
                 currentActiveAnswer = "no";
             }
             else if (algo === "g8RateOfChange") {
-                let m = Math.floor(Math.random() * 4) + 2; // slope
-                let b = Math.floor(Math.random() * 5) + 1; // intercept
+                let m = Math.floor(Math.random() * 4) + 2; 
+                let b = Math.floor(Math.random() * 5) + 1; 
                 let x1 = 1;
                 let y1 = (m * x1) + b;
                 let x2 = 2;
