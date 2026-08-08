@@ -138,15 +138,11 @@
 
         let currentActiveAnswer = null;
 
-        window.onload = function() {
-            populateUnitOptions();
-        };
-
-        // --- 2. DROPDOWN MAPPING ARCHITECTURE ---
+        // --- 2. DROPDOWN MAPPING ARCHITECTURE (FIXED) ---
         function populateUnitOptions() {
             const grade = document.getElementById('gradeSelect').value;
             const unitSelect = document.getElementById('unitSelect');
-            unitSelect.innerHTML = ""; // Clear active items
+            unitSelect.innerHTML = ""; // Wipes old choices cleanly
 
             curriculumDatabase[grade].forEach(unit => {
                 let opt = document.createElement('option');
