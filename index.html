@@ -5,20 +5,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Math Logic Lab: Probability Simulation</title>
     <style>
-        body { font-family: monospace; text-align: center; padding: 40px; background-color: #f8f9fa; color: #333; }
+        body { font-family: monospace; text-align: center; padding: 40px; background-color: #f8f9fa; color: #333; max-width: 800px; margin: 0 auto; }
         input { padding: 8px; font-size: 16px; border: 1px solid #ccc; text-align: center; }
-        button { padding: 8px 16px; font-size: 16px; cursor: pointer; background: #0076ff; color: white; border: none; }
+        button { padding: 8px 16px; font-size: 16px; cursor: pointer; background: #0076ff; color: white; border: none; border-radius: 4px; }
         #log { margin-top: 20px; font-size: 18px; }
+        
+        /* Layout formatting for the multi-module site */
+        .project-card { background: white; border: 1px solid #e1e4e8; border-radius: 6px; padding: 25px; margin-top: 30px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); text-align: left; }
+        .project-title { font-size: 20px; font-weight: bold; margin: 0 0 10px 0; color: #0076ff; }
+        .btn { display: inline-block; background: #24292e; color: white; padding: 8px 16px; text-decoration: none; border-radius: 4px; font-size: 14px; margin-top: 10px; font-family: sans-serif; }
+        .btn:hover { background: #0076ff; }
+        iframe { border: none; margin-top: 15px; }
     </style>
 </head>
 <body>
 
-    <h2>Integer Estimation Exercise</h2>
-    <p>Analyze random distribution algorithms by tracking guess deviations.</p>
-    
-    <input type="number" id="userGuess" placeholder="Input Value (1-100)">
-    <button onclick="evaluateInput()">Verify</button>
-    <div id="log"></div>
+    <h2>Interactive Computer Science & Logic Portal</h2>
+    <p>This sandbox deployment reviews web asset execution, math tracking vectors, and user input validation algorithms.</p>
+
+    <!-- Module 1: Your original Number Guessing Game -->
+    <div class="project-card">
+        <div class="project-title">Module 1: Integer Estimation Exercise</div>
+        <p>Analyze random distribution algorithms by tracking guess deviations.</p>
+        
+        <div style="text-align: center; padding: 10px 0;">
+            <input type="number" id="userGuess" placeholder="Input Value (1-100)">
+            <button onclick="evaluateInput()">Verify</button>
+            <div id="log"></div>
+        </div>
+    </div>
+
+    <!-- Module 2: The Drive Mad Game Link -->
+    <div class="project-card">
+        <div class="project-title">Module 2: 3D Car Physics & Velocity Simulation</div>
+        <p>Testing acceleration curves, vector friction variables, and grid boundary tracking within a block-car environment framework.</p>
+        <a href="/drive-physics/" class="btn">Initialize Simulation Engine</a>
+    </div>
+
+    <!-- Module 3: The Hollow Knight Simulation Link -->
+    <div class="project-card">
+        <div class="project-title">Module 3: 2D Sprite Animation & Platforming Mechanics</div>
+        <p>Evaluating multi-layered parallax scrolling backgrounds, state controllers, and gravity jump tracking physics formulas.</p>
+        <a href="/hollow-simulation/" class="btn">Initialize Simulation Engine</a>
+    </div>
+
+    <!-- Module 4: Google Form Request Box -->
+    <div class="project-card">
+        <div class="project-title">Module 4: User Experience (UX) Feedback & Requests</div>
+        <p>Submit open-ended data regarding rendering performance or suggest new JavaScript game engines to analyze.</p>
+        
+        <!-- IMPORTANT: Replace the URL inside the src="" quotes below with your real Google Form embed link -->
+        <iframe src="https://google.com" width="100%" height="500">Loading…</iframe>
+    </div>
 
     <script>
         const targetValue = Math.floor(Math.random() * 100) + 1;
