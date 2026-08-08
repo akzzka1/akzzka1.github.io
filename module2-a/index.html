@@ -19,7 +19,7 @@
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
 
-        // Fit to browser window
+        // Fit to browser window size dynamically
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
@@ -30,7 +30,6 @@
         let friction = 0.999;
         let draggedPoint = null;
 
-        // Vector tracking configurations
         function addPoint(x, y, oldX, oldY, pinned = false) {
             points.push({ x, y, oldX: oldX || x, oldY: oldY || y, pinned });
             return points[points.length - 1];
@@ -72,7 +71,7 @@
             addStick(rShoulder, lShoulder);
         }
 
-        // Spawn multiple test entities
+        // Spawn multiple interactive entities
         buildRagdoll(canvas.width / 2, canvas.height / 3);
         buildRagdoll(canvas.width / 2 - 150, canvas.height / 3);
         buildRagdoll(canvas.width / 2 + 150, canvas.height / 3);
@@ -89,7 +88,7 @@
                     p.y += vy;
                     p.y += gravity;
 
-                    // Floor/Wall Collisions
+                    // Bound Collisions
                     if (p.x > canvas.width) { p.x = canvas.width; p.oldX = p.x + vx * bounce; }
                     else if (p.x < 0) { p.x = 0; p.oldX = p.x + vx * bounce; }
                     if (p.y > canvas.height) { p.y = canvas.height; p.oldY = p.y + vy * bounce; }
@@ -142,7 +141,7 @@
                 draggedPoint.y = mouseY;
             }
             updatePoints();
-            for (let i = 0; i < 5; i++) { updateSticks(); } // Multi-pass matrix solver
+            for (let i = 0; i < 5; i++) { updateSticks(); } 
             render();
             requestAnimationFrame(update);
         }
