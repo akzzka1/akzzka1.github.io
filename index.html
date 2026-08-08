@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Logic Lab: Probability Simulation</title>
+    <style>
+        body { font-family: monospace; text-align: center; padding: 40px; background-color: #f8f9fa; color: #333; }
+        input { padding: 8px; font-size: 16px; border: 1px solid #ccc; text-align: center; }
+        button { padding: 8px 16px; font-size: 16px; cursor: pointer; background: #0076ff; color: white; border: none; }
+        #log { margin-top: 20px; font-size: 18px; }
+    </style>
+</head>
+<body>
+
+    <h2>Integer Estimation Exercise</h2>
+    <p>Analyze random distribution algorithms by tracking guess deviations.</p>
+    
+    <input type="number" id="userGuess" placeholder="Input Value (1-100)">
+    <button onclick="evaluateInput()">Verify</button>
+    <div id="log"></div>
+
+    <script>
+        const targetValue = Math.floor(Math.random() * 100) + 1;
+
+        function evaluateInput() {
+            const currentGuess = parseInt(document.getElementById('userGuess').value);
+            const outputLog = document.getElementById('log');
+
+            if (currentGuess === targetValue) {
+                outputLog.innerHTML = "🎯 Match Detected. Goal met.";
+                outputLog.style.color = "green";
+            } else if (currentGuess > targetValue) {
+                outputLog.innerHTML = "Deviation: Value is too high.";
+                outputLog.style.color = "red";
+            } else if (currentGuess < targetValue) {
+                outputLog.innerHTML = "Deviation: Value is too low.";
+                outputLog.style.color = "red";
+            } else {
+                outputLog.innerHTML = "Error: Invalid entry.";
+            }
+        }
+    </script>
+</body>
+</html>
