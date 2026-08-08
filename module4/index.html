@@ -3,56 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text Layout Analysis & Database Parsing Terminal</title>
+    <title>Text Layout Analysis & Reading Tracker</title>
     <style>
-        body { margin: 0; padding: 0; background-color: #f7f9fa; font-family: monospace; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
-        .academic-banner { background-color: #24292e; color: #ffffff; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; border-bottom: 3px solid #0076ff; }
-        .academic-banner span { font-weight: bold; }
-        .back-btn { background: #0076ff; color: white; border: none; padding: 5px 12px; cursor: pointer; border-radius: 3px; text-decoration: none; font-size: 12px; }
-        .app-frame-container { flex: 1; width: 100%; height: 100%; position: relative; background: #fff; }
-        #proxyFrame { width: 100%; height: 100%; border: none; }
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 0; background-color: #f7f9fa; color: #2d3748; display: flex; height: 100vh; }
+        
+        /* Dashboard Catalog Sidebar Navigation column */
+        .sidebar { width: 300px; background: #ffffff; border-right: 1px solid #e2e8f0; display: flex; flex-direction: column; padding: 20px; }
+        .sidebar h2 { font-size: 18px; margin-top: 0; color: #4a5568; border-bottom: 2px solid #edf2f7; padding-bottom: 10px; font-family: monospace; }
+        .book-item { padding: 12px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; margin-bottom: 10px; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.2s; }
+        .book-item:hover { background: #edf2f7; border-color: #cbd5e1; color: #0076ff; }
+        
+        /* Reading Viewer Workspace layout */
+        .viewer-container { flex: 1; display: flex; flex-direction: column; background: #ffffff; height: 100%; position: relative; }
+        .toolbar { height: 60px; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: space-between; padding: 0 30px; background: #f8fafc; }
+        .title-display { font-weight: bold; color: #4a5568; }
+        .tools button { background: white; border: 1px solid #cbd5e1; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-weight: 600; margin-left: 5px; }
+        .tools button:hover { background: #f1f5f9; }
+        
+        /* Main Book Text Interface window */
+        .text-window { flex: 1; padding: 40px 60px; overflow-y: auto; line-height: 1.8; font-size: 18px; max-width: 800px; margin: 0 auto; text-align: left; }
+        .theme-dark { background-color: #1a202c !important; color: #e2e8f0 !important; }
+        .theme-dark .toolbar, .theme-dark .sidebar { background-color: #2d3748 !important; border-color: #4a5568 !important; color: white !important; }
+        .theme-dark .book-item { background-color: #4a5568 !important; border-color: #718096 !important; color: white !important; }
     </style>
 </head>
 <body>
 
-    <!-- Academic Camouflage Cover Shield Header -->
-    <div class="academic-banner">
-        <div><span>Data Processing Stream:</span> Core_Index_Module_04.dat</div>
-        <div>Parsing Algorithm: Text Layout Geometry Engine</div>
-        <a href="../" class="back-btn">← Return to Root Hub</a>
+    <!-- SIDEBAR: Your Libby Book Catalog Navigation Column -->
+    <div class="sidebar" id="sidebar">
+        <h2>Data Library Indexes</h2>
+        <p style="font-size: 11px; color:#a0aec0; margin-bottom: 15px;">Select a text file matrix node below to parse formatting rendering data.</p>
+        
+        <!-- Simply copy this layout line below to expand your brother's custom book shelf list -->
+        <div class="book-item" onclick="loadBook('The Adventures of Sherlock Holmes', book1Text)">🕵️‍♂️ Book 1: Sherlock Holmes</div>
+        <div class="book-item" onclick="loadBook('Alice in Wonderland', book2Text)">🐇 Book 2: Alice in Wonderland</div>
+        <div class="book-item" onclick="loadBook('Frankenstein', book3Text)">🧟‍♂️ Book 3: Frankenstein</div>
     </div>
 
-    <!-- The Proxy Frame Window -->
-    <div class="app-frame-container">
-        <!-- This opens Libby through an open-source cors-bypass proxy network to defeat Linewize filters -->
-        <iframe id="proxyFrame" allowfullscreen="true" allow="clipboard-read; clipboard-write; gamepad *;"></iframe>
+    <!-- MAIN VIEWER WINDOW -->
+    <div class="viewer-container" id="mainViewer">
+        <div class="toolbar">
+            <div class="title-display" id="activeTitle">No File Matrix Loaded</div>
+            <div class="tools">
+                <button onclick="changeFontSize(1)">A+</button>
+                <button onclick="changeFontSize(-1)">A-</button>
+                <button onclick="toggleTheme()">☀️/🌙 Toggle Theme</button>
+            </div>
+        </div>
+        
+        <!-- Raw Text View area box -->
+        <div class="text-window" id="storyWindow">
+            Please choose a catalog file node repository from the left panel column to compile and visualize document arrays.
+        </div>
     </div>
 
     <script>
-        // We use an unblocked public cors-anywhere engine node to rewrite the source headers in real-time
-        // This stops Linewize from identifying the libbyapp background traffic footprint
-        const targetUrl = 'https://libbyapp.com';
-        const proxyGateway = 'https://allorigins.win' + encodeURIComponent(targetUrl);
+        let currentSize = 18;
         
-        // Fetch the raw code and inject it directly into your local domain loop
-        fetch(proxyGateway)
-            .then(response => response.text())
-            .then(html => {
-                const frame = document.getElementById('proxyFrame');
-                const doc = frame.contentWindow.document;
-                
-                // Inject base tag to force all internal Libby links, styles, and assets to process locally via proxy variables
-                let secureHtml = html.replace('<head>', '<head><base href="https://libbyapp.com">');
-                
-                doc.open();
-                doc.write(secureHtml);
-                doc.close();
-            })
-            .catch(err => {
-                // Fallback direct configuration routing engine if the API traffic has heavy load
-                document.getElementById('proxyFrame').src = "https://libbyapp.com";
-            });
-    </script>
+        function changeFontSize(direction) {
+            currentSize += direction * 2;
+            if(currentSize < 12) currentSize = 12;
+            if(currentSize > 32) currentSize = 32;
+            document.getElementById('storyWindow').style.fontSize = currentSize + 'px';
+        }
 
+        function toggleTheme() {
+            document.body.classList.toggle('theme-dark');
+        }
+
+        function loadBook(title, bookText) {
+            document.getElementById('activeTitle').innerText = title;
+            document.getElementById('storyWindow').innerHTML = bookText;
+            document.getElementById('storyWindow').scrollTop = 0; // Reset scroll bar index to top
+        }
+
+        // --- CUSTOM BOOK CHUNKS STORAGE PANEL ---
+        // Your brother can paste text files right between the ticks below to read any story he wants.
+        const book1Text = `<h3>Chapter 1: A Scandal in Bohemia</h3><p>To Sherlock Holmes she is always <i>the woman</i>. I have seldom heard him mention her under any other name. In his eyes she eclipses and predominates the whole of her sex. It was not that he felt any emotion akin to love for Irene Adler. All emotions, and that one particularly, were abhorrent to his cold, precise but admirably balanced mind.</p>`;
+
+        const book2Text = `<h3>Chapter 1: Down the Rabbit-Hole</h3><p>Alice was beginning to get very tired of sitting by her sister on the bank, and of having nothing to do: once or twice she had peeped into the book her sister was reading, but it had no pictures or conversations in it, “and what is the use of a book,” thought Alice “without pictures or conversations?”</p>`;
+
+        const book3Text = `<h3>Chapter 1: The Birth of a Monster</h3><p>I am by birth a Genevese, and my family is one of the most distinguished of that republic. My ancestors had been for many years counsellors and syndics, and my father had filled several public situations with honour and reputation.</p>`;
+    </script>
 </body>
 </html>
