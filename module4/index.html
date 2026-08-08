@@ -28,7 +28,6 @@
         <h1>GSE Target Standards Learning & Assessment Engine</h1>
         <p style="font-size: 12px; color: #666; margin-bottom: 25px;">Configure the multi-tiered parameter grid dropdowns below to choose the targeted curriculum unit index vectors.</p>
         
-        <!-- DOUBLE SELECTOR CONTROLS LAYER -->
         <div class="selector-group">
             <div>
                 <label for="gradeSelect">1. Target Grade Level:</label>
@@ -59,10 +58,8 @@
         
         <button onclick="computeDynamicProblem()">Generate Dynamic Target Problem</button>
 
-        <!-- PROBLEM FIELD -->
         <div class="problem-box" id="problemDisplay">Select options above and launch the calculation thread.</div>
 
-        <!-- INPUT ENTRY HOOK -->
         <input type="text" id="userAnswer" placeholder="Type your final computed numerical answer value here...">
         <button class="submit-btn" onclick="validateUserResponse()">Submit Evaluation Matrix Query</button>
         
@@ -72,7 +69,6 @@
     </div>
 
     <script>
-        // --- 1. DETAILED MATRIX MAPPING DATASETS FOR ALL UNITS ---
         const curriculumDatabase = {
             K: [
                 { id: "u1", code: "GK.CC.1", name: "Unit 1: Count Sequences to 100", algo: "countSeq" },
@@ -138,12 +134,21 @@
 
         let currentActiveAnswer = null;
 
-        // --- 2. DROPDOWN MAPPING ARCHITECTURE (FIXED) ---
         function populateUnitOptions() {
             const grade = document.getElementById('gradeSelect').value;
             const unitSelect = document.getElementById('unitSelect');
-            unitSelect.innerHTML = ""; // Wipes old choices cleanly
+            unitSelect.innerHTML = ""; 
 
             curriculumDatabase[grade].forEach(unit => {
                 let opt = document.createElement('option');
                 opt.value = unit.algo;
+                opt.setAttribute('data-code', unit.code); 
+                opt.innerText = unit.name;
+                unitSelect.appendChild(opt);
+            });
+
+            updateSystemState();
+        }
+
+        function updateSystemState() {
+            document.getElementById('userAnswer').value = "";
