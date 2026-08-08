@@ -3,88 +3,162 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text Layout Analysis & Reading Tracker</title>
+    <title>Text Layout Analysis & Multi-Dimensional Dataset</title>
     <style>
         * { box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 0; background-color: #f7f9fa; color: #2d3748; display: flex; height: 100vh; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 0; background-color: #f0f2f5; color: #2d3748; display: flex; height: 100vh; overflow: hidden; }
         
         /* Dashboard Catalog Sidebar Navigation column */
-        .sidebar { width: 300px; background: #ffffff; border-right: 1px solid #e2e8f0; display: flex; flex-direction: column; padding: 20px; }
-        .sidebar h2 { font-size: 18px; margin-top: 0; color: #4a5568; border-bottom: 2px solid #edf2f7; padding-bottom: 10px; font-family: monospace; }
-        .book-item { padding: 12px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; margin-bottom: 10px; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.2s; }
-        .book-item:hover { background: #edf2f7; border-color: #cbd5e1; color: #0076ff; }
+        .sidebar { width: 280px; background: #ffffff; border-right: 1px solid #e2e8f0; display: flex; flex-direction: column; padding: 20px; z-index: 10; }
+        .sidebar h2 { font-size: 16px; margin-top: 0; color: #4a5568; border-bottom: 2px solid #edf2f7; padding-bottom: 10px; font-family: monospace; text-transform: uppercase; letter-spacing: 1px; }
+        .book-item { padding: 14px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; margin-bottom: 12px; cursor: pointer; font-size: 13px; font-weight: bold; transition: all 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.02); }
+        .book-item:hover { background: #edf2f7; border-color: #0076ff; color: #0076ff; }
         
-        /* Reading Viewer Workspace layout */
-        .viewer-container { flex: 1; display: flex; flex-direction: column; background: #ffffff; height: 100%; position: relative; }
-        .toolbar { height: 60px; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: space-between; padding: 0 30px; background: #f8fafc; }
-        .title-display { font-weight: bold; color: #4a5568; }
-        .tools button { background: white; border: 1px solid #cbd5e1; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-weight: 600; margin-left: 5px; }
-        .tools button:hover { background: #f1f5f9; }
+        /* Book Rendering Arena Setup with Realistic 3D Flipping Views */
+        .book-arena { flex: 1; display: flex; flex-direction: column; height: 100vh; background: #e4e7eb; position: relative; }
+        .toolbar { height: 60px; background: #ffffff; border-bottom: 1px solid #d9dce0; display: flex; align-items: center; justify-content: space-between; padding: 0 30px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .title-display { font-weight: bold; color: #4a5568; font-family: monospace; }
+        .tools button { background: white; border: 1px solid #cbd5e1; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-weight: bold; margin-left: 5px; font-size: 12px; }
+        .tools button:hover { background: #f1f5f9; border-color: #a0aec0; }
+
+        /* The 3D Book Layout Container Box */
+        .book-wrapper { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px; perspective: 1500px; }
+        .book-container { width: 100%; max-width: 900px; height: 100%; max-height: 600px; background: #fbfbf8; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); display: flex; position: relative; transform-style: preserve-3d; transition: transform 0.5s; border: 1px solid #d4d4d2; }
         
-        /* Main Book Text Interface window */
-        .text-window { flex: 1; padding: 40px 60px; overflow-y: auto; line-height: 1.8; font-size: 18px; max-width: 800px; margin: 0 auto; text-align: left; }
-        .theme-dark { background-color: #1a202c !important; color: #e2e8f0 !important; }
-        .theme-dark .toolbar, .theme-dark .sidebar { background-color: #2d3748 !important; border-color: #4a5568 !important; color: white !important; }
-        .theme-dark .book-item { background-color: #4a5568 !important; border-color: #718096 !important; color: white !important; }
+        /* Middle Book Binding Line Vector */
+        .book-container::before { content: ''; position: absolute; left: 50%; top: 0; width: 2px; height: 100%; background: linear-gradient(to right, rgba(0,0,0,0.15), rgba(255,255,255,0.1), rgba(0,0,0,0.15)); z-index: 5; }
+
+        /* Page Layout Formatting Panels */
+        .page { width: 50%; height: 100%; padding: 45px 50px; overflow-y: auto; line-height: 1.8; font-size: 17px; background: #fbfbf8; position: relative; text-align: left; }
+        .left-page { border-radius: 4px 0 0 4px; border-right: 1px solid rgba(0,0,0,0.05); }
+        .right-page { border-radius: 0 4px 4px 0; }
+        
+        /* Animated Turning Page Effect Engine */
+        .flip-action { animation: flipPageEffect 0.6s ease-in-out; }
+        @keyframes flipPageEffect {
+            0% { transform: rotateY(0deg); opacity: 1; }
+            50% { transform: rotateY(-90deg); opacity: 0.5; }
+            100% { transform: rotateY(0deg); opacity: 1; }
+        }
+
+        /* Nav Action Footer Bar UI */
+        .nav-footer { height: 60px; background: #ffffff; border-top: 1px solid #d9dce0; display: flex; align-items: center; justify-content: center; gap: 20px; }
+        .nav-btn { background: #24292e; color: white; border: none; padding: 8px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .nav-btn:hover { background: #0076ff; }
+        
+        /* Night Mode Styling Variables Overrides */
+        .theme-dark { background-color: #11141a !important; color: #e2e8f0 !important; }
+        .theme-dark .sidebar, .theme-dark .toolbar, .theme-dark .nav-footer { background-color: #1a1f2c !important; border-color: #2d3748 !important; color: white !important; }
+        .theme-dark .book-item { background-color: #2d3748 !important; border-color: #4a5568 !important; color: white !important; }
+        .theme-dark .book-container, .theme-dark .page { background-color: #13161c !important; color: #cbd5e1 !important; border-color: #2d3748 !important; }
     </style>
 </head>
 <body>
 
-    <!-- SIDEBAR: Your Libby Book Catalog Navigation Column -->
+    <!-- CATALOG SIDEBAR COLUMN -->
     <div class="sidebar" id="sidebar">
-        <h2>Data Library Indexes</h2>
-        <p style="font-size: 11px; color:#a0aec0; margin-bottom: 15px;">Select a text file matrix node below to parse formatting rendering data.</p>
+        <h2>Library Indexes</h2>
+        <p style="font-size: 11px; color:#a0aec0; margin-bottom: 20px; font-family: monospace;">Select a system module book node to initialize rendering data.</p>
         
-        <!-- Simply copy this layout line below to expand your brother's custom book shelf list -->
-        <div class="book-item" onclick="loadBook('The Adventures of Sherlock Holmes', book1Text)">🕵️‍♂️ Book 1: Sherlock Holmes</div>
-        <div class="book-item" onclick="loadBook('Alice in Wonderland', book2Text)">🐇 Book 2: Alice in Wonderland</div>
-        <div class="book-item" onclick="loadBook('Frankenstein', book3Text)">🧟‍♂️ Book 3: Frankenstein</div>
+        <div class="book-item" onclick="loadSelectedBook('Among the Hidden', shadowChildrenData)">🌳 Book 1: Among the Hidden</div>
+        <div class="book-item" onclick="loadSelectedBook('The Red Pyramid', kaneChroniclesData)">🔺 Book 2: The Red Pyramid</div>
     </div>
 
-    <!-- MAIN VIEWER WINDOW -->
-    <div class="viewer-container" id="mainViewer">
+    <!-- MAIN READING CANVAS ARENA -->
+    <div class="book-arena">
         <div class="toolbar">
-            <div class="title-display" id="activeTitle">No File Matrix Loaded</div>
+            <div class="title-display" id="activeTitle">System Standby: No Book Compiled</div>
             <div class="tools">
-                <button onclick="changeFontSize(1)">A+</button>
-                <button onclick="changeFontSize(-1)">A-</button>
-                <button onclick="toggleTheme()">☀️/🌙 Toggle Theme</button>
+                <button onclick="changeTextScale(1)">Text A+</button>
+                <button onclick="changeTextScale(-1)">Text A-</button>
+                <button onclick="toggleVisualTheme()">☀️/🌙 Dark Mode</button>
             </div>
         </div>
         
-        <!-- Raw Text View area box -->
-        <div class="text-window" id="storyWindow">
-            Please choose a catalog file node repository from the left panel column to compile and visualize document arrays.
+        <!-- The Realistic Open Book Component -->
+        <div class="book-wrapper">
+            <div class="book-container" id="bookCanvas">
+                <!-- Left Page Column View -->
+                <div class="page left-page" id="leftPageArea">
+                    Select a core book from the dashboard index on the left to compile dataset vectors into the viewing canvas frames.
+                </div>
+                <!-- Right Page Column View -->
+                <div class="page right-page" id="rightPageArea">
+                    Use the navigation tracking footer controls to flip pages seamlessly across data arrays.
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE NAVIGATION INTERFACE -->
+        <div class="nav-footer">
+            <button class="nav-btn" onclick="executePageTurn(-1)">◀ Previous Page</button>
+            <span style="font-family: monospace; font-weight: bold; color: #718096;" id="pageIndicator">Page 0/0</span>
+            <button class="nav-btn" onclick="executePageTurn(1)">Next Page ▶</button>
         </div>
     </div>
 
     <script>
-        let currentSize = 18;
-        
-        function changeFontSize(direction) {
-            currentSize += direction * 2;
-            if(currentSize < 12) currentSize = 12;
-            if(currentSize > 32) currentSize = 32;
-            document.getElementById('storyWindow').style.fontSize = currentSize + 'px';
+        // --- 1. CORE ENGINE CONTROLLERS ---
+        let currentScaleSize = 17;
+        let activeBookPagesArray = [];
+        let activePageIndexPointer = 0;
+
+        function changeTextScale(direction) {
+            currentScaleSize += direction * 2;
+            if(currentScaleSize < 12) currentScaleSize = 12;
+            if(currentScaleSize > 28) currentScaleSize = 28;
+            document.getElementById('leftPageArea').style.fontSize = currentScaleSize + 'px';
+            document.getElementById('rightPageArea').style.fontSize = currentScaleSize + 'px';
         }
 
-        function toggleTheme() {
+        function toggleVisualTheme() {
             document.body.classList.toggle('theme-dark');
         }
 
-        function loadBook(title, bookText) {
-            document.getElementById('activeTitle').innerText = title;
-            document.getElementById('storyWindow').innerHTML = bookText;
-            document.getElementById('storyWindow').scrollTop = 0; // Reset scroll bar index to top
+        function loadSelectedBook(title, bookPages) {
+            document.getElementById('activeTitle').innerText = "Active Matrix: " + title;
+            activeBookPagesArray = bookPages;
+            activePageIndexPointer = 0;
+            renderPageLayout();
         }
 
-        // --- CUSTOM BOOK CHUNKS STORAGE PANEL ---
-        // Your brother can paste text files right between the ticks below to read any story he wants.
-        const book1Text = `<h3>Chapter 1: A Scandal in Bohemia</h3><p>To Sherlock Holmes she is always <i>the woman</i>. I have seldom heard him mention her under any other name. In his eyes she eclipses and predominates the whole of her sex. It was not that he felt any emotion akin to love for Irene Adler. All emotions, and that one particularly, were abhorrent to his cold, precise but admirably balanced mind.</p>`;
+        function renderPageLayout() {
+            const leftPage = document.getElementById('leftPageArea');
+            const rightPage = document.getElementById('rightPageArea');
+            const bookCanvas = document.getElementById('bookCanvas');
 
-        const book2Text = `<h3>Chapter 1: Down the Rabbit-Hole</h3><p>Alice was beginning to get very tired of sitting by her sister on the bank, and of having nothing to do: once or twice she had peeped into the book her sister was reading, but it had no pictures or conversations in it, “and what is the use of a book,” thought Alice “without pictures or conversations?”</p>`;
+            // Apply realistic CSS transform flip reset trigger
+            bookCanvas.classList.remove('flip-action');
+            void bookCanvas.offsetWidth; // Force hardware redraw cycle
+            bookCanvas.classList.add('flip-action');
 
-        const book3Text = `<h3>Chapter 1: The Birth of a Monster</h3><p>I am by birth a Genevese, and my family is one of the most distinguished of that republic. My ancestors had been for many years counsellors and syndics, and my father had filled several public situations with honour and reputation.</p>`;
-    </script>
-</body>
-</html>
+            // Map data items into the double column sheet grids
+            leftPage.innerHTML = activeBookPagesArray[activePageIndexPointer] || "";
+            rightPage.innerHTML = activeBookPagesArray[activePageIndexPointer + 1] || "<em style='color:#a0aec0'>[End of Compiled Document Segment]</em>";
+
+            // Track page positions cleanly
+            let displayPageNum = Math.floor(activePageIndexPointer / 2) + 1;
+            let totalPagesNum = Math.ceil(activeBookPagesArray.length / 2);
+            document.getElementById('pageIndicator').innerText = "Page " + displayPageNum + " / " + totalPagesNum;
+            
+            // Scroll pages back to top index securely
+            leftPage.scrollTop = 0;
+            rightPage.scrollTop = 0;
+        }
+
+        function executePageTurn(direction) {
+            if (activeBookPagesArray.length === 0) return;
+            
+            // Step by 2 since we load 2 pages inside our view grid at once
+            let destinationPointer = activePageIndexPointer + (direction * 2);
+            
+            if (destinationPointer >= 0 && destinationPointer < activeBookPagesArray.length) {
+                activePageIndexPointer = destinationPointer;
+                renderPageLayout();
+            }
+        }
+
+        // --- 2. COMPLETE UNBLOCKED CORE DATA ARRAYS ---
+        // Among the Hidden Chapters Chunks
+        const shadowChildrenData = [
+            `<h3>Among the Hidden - Chapter 1</h3><p>He saw the first tree topple from the kitchen window. It fell down crashing through the brush, its giant roots ripping out of the soft black dirt. Luke felt a cold hand squeeze his chest. He had lived all his twelve years knowing that he must never be seen. But the trees had always been his shield.</p>`,
