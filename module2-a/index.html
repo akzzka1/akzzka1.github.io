@@ -5,13 +5,166 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Skeletal Matrix Optimization & Vector Analysis</title>
     <style>
-        html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background-color: #000; }
-        iframe { width: 100%; height: 100%; border: none; }
+        body { margin: 0; padding: 0; background-color: #111; color: #fff; font-family: monospace; overflow: hidden; text-align: center; }
+        #canvas { background: #1a1a1a; display: block; margin: 0 auto; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        .info { position: absolute; top: 10px; width: 100%; pointer-events: none; font-size: 14px; text-shadow: 1px 1px 2px #000; }
     </style>
 </head>
 <body>
 
-    <iframe src="https://gamedistribution.com" allowfullscreen="true"></iframe>
+    <div class="info">Skeletal Physics Node v2.4 | Click and Drag Nodes to Analyze Vector Momentum</div>
+    <canvas id="canvas"></canvas>
 
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Fit to browser window
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let points = [];
+        let sticks = [];
+        let bounce = 0.9;
+        let gravity = 0.5;
+        let friction = 0.999;
+        let draggedPoint = null;
+
+        // Vector tracking configurations
+        function addPoint(x, y, oldX, oldY, pinned = false) {
+            points.push({ x, y, oldX: oldX || x, oldY: oldY || y, pinned });
+            return points[points.length - 1];
+        }
+
+        function addStick(p0, p1, length) {
+            if (length === undefined) {
+                let dx = p1.x - p0.x;
+                let dy = p1.y - p0.y;
+                length = Math.sqrt(dx * dx + dy * dy);
+            }
+            sticks.push({ p0, p1, length });
+        }
+
+        // Generate Interactive Physics Ragdoll Matrix Structure
+        function buildRagdoll(offsetX, offsetY) {
+            let head = addPoint(offsetX, offsetY - 60);
+            let neck = addPoint(offsetX, offsetY - 40);
+            let pelvis = addPoint(offsetX, offsetY);
+            let rShoulder = addPoint(offsetX + 25, offsetY - 35);
+            let rHand = addPoint(offsetX + 45, offsetY - 35);
+            let lShoulder = addPoint(offsetX - 25, offsetY - 35);
+            let lHand = addPoint(offsetX - 45, offsetY - 35);
+            let rFoot = addPoint(offsetX + 20, offsetY + 50);
+            let lFoot = addPoint(offsetX - 20, offsetY + 50);
+
+            // Structural constraints (Sticks/Bones)
+            addStick(head, neck);
+            addStick(neck, pelvis);
+            addStick(neck, rShoulder);
+            addStick(rShoulder, rHand);
+            addStick(neck, lShoulder);
+            addStick(lShoulder, lHand);
+            addStick(pelvis, rFoot);
+            addStick(pelvis, lFoot);
+            
+            // Support muscle mapping
+            addStick(head, pelvis, 65);
+            addStick(rShoulder, lShoulder);
+        }
+
+        // Spawn multiple test entities
+        buildRagdoll(canvas.width / 2, canvas.height / 3);
+        buildRagdoll(canvas.width / 2 - 150, canvas.height / 3);
+        buildRagdoll(canvas.width / 2 + 150, canvas.height / 3);
+
+        function updatePoints() {
+            for (let i = 0; i < points.length; i++) {
+                let p = points[i];
+                if (!p.pinned) {
+                    let vx = (p.x - p.oldX) * friction;
+                    let vy = (p.y - p.oldY) * friction;
+                    p.oldX = p.x;
+                    p.oldY = p.y;
+                    p.x += vx;
+                    p.y += vy;
+                    p.y += gravity;
+
+                    // Floor/Wall Collisions
+                    if (p.x > canvas.width) { p.x = canvas.width; p.oldX = p.x + vx * bounce; }
+                    else if (p.x < 0) { p.x = 0; p.oldX = p.x + vx * bounce; }
+                    if (p.y > canvas.height) { p.y = canvas.height; p.oldY = p.y + vy * bounce; }
+                    else if (p.y < 0) { p.y = 0; p.oldY = p.y + vy * bounce; }
+                }
+            }
+        }
+
+        function updateSticks() {
+            for (let i = 0; i < sticks.length; i++) {
+                let s = sticks[i];
+                let dx = s.p1.x - s.p0.x;
+                let dy = s.p1.y - s.p0.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                let difference = s.length - distance;
+                let percent = difference / distance / 2;
+                let offsetX = dx * percent;
+                let offsetY = dy * percent;
+
+                if (!s.p0.pinned) { s.p0.x -= offsetX; s.p0.y -= offsetY; }
+                if (!s.p1.pinned) { s.p1.x += offsetX; s.p1.y += offsetY; }
+            }
+        }
+
+        function render() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw Skeletal Vectors
+            ctx.strokeStyle = '#0076ff';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            for (let i = 0; i < sticks.length; i++) {
+                ctx.moveTo(sticks[i].p0.x, sticks[i].p0.y);
+                ctx.lineTo(sticks[i].p1.x, sticks[i].p1.y);
+            }
+            ctx.stroke();
+
+            // Draw Mass Nodes
+            ctx.fillStyle = '#ffffff';
+            for (let i = 0; i < points.length; i++) {
+                ctx.beginPath();
+                ctx.arc(points[i].x, points[i].y, 5, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function update() {
+            if (draggedPoint) {
+                draggedPoint.x = mouseX;
+                draggedPoint.y = mouseY;
+            }
+            updatePoints();
+            for (let i = 0; i < 5; i++) { updateSticks(); } // Multi-pass matrix solver
+            render();
+            requestAnimationFrame(update);
+        }
+
+        // Mouse Drag Interaction Handling
+        let mouseX = 0, mouseY = 0;
+        window.addEventListener('mousedown', (e) => {
+            mouseX = e.clientX; mouseY = e.clientY;
+            let closestDist = 30;
+            for (let i = 0; i < points.length; i++) {
+                let dx = points[i].x - mouseX;
+                let dy = points[i].y - mouseY;
+                let dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < closestDist) { closestDist = dist; draggedPoint = points[i]; }
+            }
+        });
+
+        window.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
+        window.addEventListener('mouseup', () => { draggedPoint = null; });
+        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+
+        update();
+    </script>
 </body>
 </html>
