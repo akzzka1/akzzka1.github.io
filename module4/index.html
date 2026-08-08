@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Layout Analysis & Database Parsing Terminal</title>
+    <style>
+        body { margin: 0; padding: 0; background-color: #f7f9fa; font-family: monospace; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        .academic-banner { background-color: #24292e; color: #ffffff; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; border-bottom: 3px solid #0076ff; }
+        .academic-banner span { font-weight: bold; }
+        .back-btn { background: #0076ff; color: white; border: none; padding: 5px 12px; cursor: pointer; border-radius: 3px; text-decoration: none; font-size: 12px; }
+        .app-frame-container { flex: 1; width: 100%; height: 100%; position: relative; background: #fff; }
+        #proxyFrame { width: 100%; height: 100%; border: none; }
+    </style>
+</head>
+<body>
+
+    <!-- Academic Camouflage Cover Shield Header -->
+    <div class="academic-banner">
+        <div><span>Data Processing Stream:</span> Core_Index_Module_04.dat</div>
+        <div>Parsing Algorithm: Text Layout Geometry Engine</div>
+        <a href="../" class="back-btn">← Return to Root Hub</a>
+    </div>
+
+    <!-- The Proxy Frame Window -->
+    <div class="app-frame-container">
+        <!-- This opens Libby through an open-source cors-bypass proxy network to defeat Linewize filters -->
+        <iframe id="proxyFrame" allowfullscreen="true" allow="clipboard-read; clipboard-write; gamepad *;"></iframe>
+    </div>
+
+    <script>
+        // We use an unblocked public cors-anywhere engine node to rewrite the source headers in real-time
+        // This stops Linewize from identifying the libbyapp background traffic footprint
+        const targetUrl = 'https://libbyapp.com';
+        const proxyGateway = 'https://allorigins.win' + encodeURIComponent(targetUrl);
+        
+        // Fetch the raw code and inject it directly into your local domain loop
+        fetch(proxyGateway)
+            .then(response => response.text())
+            .then(html => {
+                const frame = document.getElementById('proxyFrame');
+                const doc = frame.contentWindow.document;
+                
+                // Inject base tag to force all internal Libby links, styles, and assets to process locally via proxy variables
+                let secureHtml = html.replace('<head>', '<head><base href="https://libbyapp.com">');
+                
+                doc.open();
+                doc.write(secureHtml);
+                doc.close();
+            })
+            .catch(err => {
+                // Fallback direct configuration routing engine if the API traffic has heavy load
+                document.getElementById('proxyFrame').src = "https://libbyapp.com";
+            });
+    </script>
+
+</body>
+</html>
