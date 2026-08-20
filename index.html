@@ -169,3 +169,7 @@
 </body>
 </html>
    
+// Add this helper script inside your landing page to alert users beforehand
+if (!window.WebAssembly) {
+    alert("Warning: Your current browser profile does not support WASM-GC. Please switch to an updated version of Google Chrome or Microsoft Edge for the best framerates!");
+}
