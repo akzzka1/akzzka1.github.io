@@ -6,11 +6,14 @@
     <title>akzzka1 Arcade</title>
     <style>
         :root {
-            --bg-color: #121212;
-            --card-bg: #1e1e1e;
-            --text-color: #ffffff;
+            --bg-color: #0b0c10;
+            --card-bg: #1f2833;
+            --text-color: #c5c6c7;
+            --text-title: #ffffff;
             --accent-green: #4caf50;
             --accent-blue: #00bcd4;
+            --accent-orange: #ff9800;
+            --accent-purple: #9c27b0;
         }
 
         body {
@@ -28,11 +31,12 @@
 
         header {
             text-align: center;
-            margin-bottom: 40px;
+            margin: 40px 0 20px 0;
+            padding: 0 20px;
         }
 
         header h1 {
-            font-size: 3rem;
+            font-size: 3.2rem;
             margin-bottom: 10px;
             letter-spacing: 2px;
             text-transform: uppercase;
@@ -42,29 +46,44 @@
         }
 
         header p {
-            color: #aaa;
-            font-size: 1.1rem;
+            color: #86c232;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-top: 0;
+        }
+
+        .compatibility-box {
+            display: none;
+            background-color: #721c24;
+            color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            padding: 15px 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            max-width: 800px;
+            width: 90%;
+            box-sizing: border-box;
+            text-align: center;
+            font-weight: bold;
         }
 
         .container {
-            display: flex;
-            gap: 30px;
-            max-width: 900px;
-            width: 100%;
-            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            width: 95%;
+            padding: 20px;
             box-sizing: border-box;
-            flex-wrap: wrap;
-            justify-content: center;
         }
 
         .card {
             background-color: var(--card-bg);
-            border: 2px solid #333;
+            border: 2px solid #2c3540;
             border-radius: 12px;
-            padding: 30px;
-            width: 350px;
+            padding: 25px;
             text-align: center;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.6);
             transition: transform 0.3s ease, border-color 0.3s ease;
             display: flex;
             flex-direction: column;
@@ -75,101 +94,129 @@
             transform: translateY(-5px);
         }
 
-        .card.v188:hover {
-            border-color: var(--accent-green);
-        }
-
-        .card.v1122:hover {
-            border-color: var(--accent-blue);
-        }
-
         .card h2 {
             margin-top: 0;
-            font-size: 1.8rem;
+            font-size: 1.6rem;
+            color: var(--text-title);
         }
 
         .card p {
-            color: #ccc;
             font-size: 0.95rem;
-            line-height: 1.5;
+            line-height: 1.6;
             margin-bottom: 25px;
             flex-grow: 1;
         }
 
+        /* Border Glow effects on hover */
+        .v188:hover { border-color: var(--accent-green); }
+        .v1122:hover { border-color: var(--accent-blue); }
+        .v152:hover { border-color: var(--accent-orange); }
+        .vserver:hover { border-color: var(--accent-purple); }
+
         .btn {
-            display: inline-block;
+            display: block;
             text-decoration: none;
-            padding: 14px 24px;
-            border-radius: 8px;
+            padding: 12px 20px;
+            border-radius: 6px;
             font-weight: bold;
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: #fff;
             transition: background-color 0.2s ease, transform 0.1s ease;
             cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
         }
 
         .btn:active {
             transform: scale(0.98);
         }
 
-        .btn-green {
-            background-color: var(--accent-green);
-        }
+        .btn-green { background-color: var(--accent-green); }
+        .btn-green:hover { background-color: #388e3c; }
 
-        .btn-green:hover {
-            background-color: #43a047;
-        }
+        .btn-blue { background-color: var(--accent-blue); }
+        .btn-blue:hover { background-color: #0097a7; }
 
-        .btn-blue {
-            background-color: var(--accent-blue);
-        }
+        .btn-orange { background-color: var(--accent-orange); }
+        .btn-orange:hover { background-color: #f57c00; }
 
-        .btn-blue:hover {
-            background-color: #00acc1;
-        }
+        .btn-purple { background-color: var(--accent-purple); }
+        .btn-purple:hover { background-color: #7b1fa2; }
 
         footer {
-            margin-top: 50px;
-            color: #555;
-            font-size: 0.85rem;
+            margin: 50px 0 30px 0;
+            color: #4f5d73;
+            font-size: 0.9rem;
+            text-align: center;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>akzzka1.github.io</h1>
-        <p>Select a version to launch directly in your browser</p>
+        <h1>akzzka1 Arcade</h1>
+        <p>Direct Browser Deployment Node</p>
     </header>
 
+    <!-- Automated alert bar for older systems -->
+    <div id="compat-alert" class="compatibility-box">
+        ⚠️ ALERT: Your browser does not appear to support WASM-GC or JSPI natively. Modern clients might freeze or throw error screens. Please use an updated version of Google Chrome or Microsoft Edge.
+    </div>
+
     <div class="container">
-        <!-- 1.8.8 Card -->
+        <!-- 1. 1.8.8 Client Card -->
         <div class="card v188">
             <div>
                 <h2>EaglercraftX 1.8.8</h2>
-                <p>The most stable, bug-free, and widely deployed version. Best for general multiplayer networks, active PvP servers, custom texture packs, and standard hardware.</p>
+                <p>The definitive gold standard for browser execution. Highly stable deployment optimized for high framerates, custom skins, voice chat, and access to all massive multiplayer PvP/Bedwars networks.</p>
             </div>
-            <a href="./1.8.8/index.html" class="btn btn-green">Launch 1.8.8</a>
+            <a href="./1.8.8/index.html" class="btn btn-green">Launch Client 1.8.8</a>
         </div>
 
-        <!-- 1.12.2 Card -->
+        <!-- 2. 1.12.2 Client Card -->
         <div class="card v1122">
             <div>
                 <h2>Eaglercraft 1.12.2</h2>
-                <p>The modern alternative featuring dual-wielding shields, Elytras, shulker boxes, and survival blocks. Highly recommended to play on modern Chrome or Edge browsers via WASM-GC.</p>
+                <p>Advanced feature variant running modern survival systems. Includes dual-wielding shields, Elytra, shulker boxes, and structural concrete blocks. Demands a modern web engine via WASM-GC runtime.</p>
             </div>
-            <a href="./1.12.2/index.html" class="btn btn-blue">Launch 1.12.2</a>
+            <a href="./1.12.2/index.html" class="btn btn-blue">Launch Client 1.12.2</a>
+        </div>
+
+        <!-- 3. 1.5.2 Client Card -->
+        <div class="card v152">
+            <div>
+                <h2>Eaglercraft 1.5.2</h2>
+                <p>The original retro legacy build. Extremely lightweight footprint requiring minimal hardware resources. Perfect fallback utility for restricted networks and low-spec vintage Chromebook models.</p>
+            </div>
+            <a href="./1.5.2/index.html" class="btn btn-orange">Launch Client 1.5.2</a>
+        </div>
+
+        <!-- 4. EaglerXServer Tool Card -->
+        <div class="card vserver">
+            <div>
+                <h2>EaglerXServer Node</h2>
+                <p>Spigot, BungeeCord, and Velocity network proxy plugin. Link this repository engine to your desktop PC Java server software setup to allow web browser visitors to connect directly to your custom worlds.</p>
+            </div>
+            <a href="https://github." target="_blank" class="btn btn-purple">Get Server Plugin</a>
         </div>
     </div>
 
     <footer>
-        &copy; 2026 akzzka1 Arcade. Powered by GitHub Pages.
+        &copy; 2026 akzzka1 Arcade. Securely Hosted via GitHub Pages. Ensure in-game V-Sync remains active.
     </footer>
+
+    <script>
+        // Automated environment validation check
+        window.addEventListener('DOMContentLoaded', () => {
+            try {
+                const hasWasm = typeof WebAssembly === "object" && typeof WebAssembly.validate === "function";
+                if (!hasWasm) {
+                    document.getElementById('compat-alert').style.display = 'block';
+                }
+            } catch (e) {
+                document.getElementById('compat-alert').style.display = 'block';
+            }
+        });
+    </script>
 
 </body>
 </html>
-   
-// Add this helper script inside your landing page to alert users beforehand
-if (!window.WebAssembly) {
-    alert("Warning: Your current browser profile does not support WASM-GC. Please switch to an updated version of Google Chrome or Microsoft Edge for the best framerates!");
-}
