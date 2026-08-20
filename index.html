@@ -26,4 +26,174 @@
     <h2>Interactive Computer Science & Logic Portal</h2>
     <p>This sandbox deployment reviews web asset execution, math tracking vectors, and user input validation algorithms.</p>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>akzzka1 Arcade</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-color: #ffffff;
+            --accent-green: #4caf50;
+            --accent-blue: #00bcd4;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            background: linear-gradient(45deg, var(--accent-green), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        header p {
+            color: #aaa;
+            font-size: 1.1rem;
+        }
+
+        .container {
+            display: flex;
+            gap: 30px;
+            max-width: 900px;
+            width: 100%;
+            padding: 0 20px;
+            box-sizing: border-box;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 2px solid #333;
+            border-radius: 12px;
+            padding: 30px;
+            width: 350px;
+            text-align: center;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card.v188:hover {
+            border-color: var(--accent-green);
+        }
+
+        .card.v1122:hover {
+            border-color: var(--accent-blue);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 1.8rem;
+        }
+
+        .card p {
+            color: #ccc;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 25px;
+            flex-grow: 1;
+        }
+
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            padding: 14px 24px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: #fff;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            cursor: pointer;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-green {
+            background-color: var(--accent-green);
+        }
+
+        .btn-green:hover {
+            background-color: #43a047;
+        }
+
+        .btn-blue {
+            background-color: var(--accent-blue);
+        }
+
+        .btn-blue:hover {
+            background-color: #00acc1;
+        }
+
+        footer {
+            margin-top: 50px;
+            color: #555;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>akzzka1.github.io</h1>
+        <p>Select a version to launch directly in your browser</p>
+    </header>
+
+    <div class="container">
+        <!-- 1.8.8 Card -->
+        <div class="card v188">
+            <div>
+                <h2>EaglercraftX 1.8.8</h2>
+                <p>The most stable, bug-free, and widely deployed version. Best for general multiplayer networks, active PvP servers, custom texture packs, and standard hardware.</p>
+            </div>
+            <a href="./1.8.8/index.html" class="btn btn-green">Launch 1.8.8</a>
+        </div>
+
+        <!-- 1.12.2 Card -->
+        <div class="card v1122">
+            <div>
+                <h2>Eaglercraft 1.12.2</h2>
+                <p>The modern alternative featuring dual-wielding shields, Elytras, shulker boxes, and survival blocks. Highly recommended to play on modern Chrome or Edge browsers via WASM-GC.</p>
+            </div>
+            <a href="./1.12.2/index.html" class="btn btn-blue">Launch 1.12.2</a>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2026 akzzka1 Arcade. Powered by GitHub Pages.
+    </footer>
+
+</body>
+</html>
    
