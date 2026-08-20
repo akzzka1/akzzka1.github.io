@@ -3,23 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>akzzka1 Arcade</title>
+    <title>akzzka1 Arcade Portal</title>
     <style>
         :root {
-            --bg-color: #0b0c10;
-            --card-bg: #1f2833;
-            --text-color: #c5c6c7;
-            --text-title: #ffffff;
-            --accent-green: #4caf50;
-            --accent-blue: #00bcd4;
-            --accent-orange: #ff9800;
-            --accent-purple: #9c27b0;
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --border-color: #30363d;
+            --text-main: #c9d1d9;
+            --text-heading: #f0f6fc;
+            --color-wasm: #00bcd4;
+            --color-js: #4caf50;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
             background-color: var(--bg-color);
-            color: var(--text-color);
+            color: var(--text-main);
             margin: 0;
             padding: 0;
             display: flex;
@@ -31,121 +30,133 @@
 
         header {
             text-align: center;
-            margin: 40px 0 20px 0;
-            padding: 0 20px;
+            margin: 40px 0 30px 0;
         }
 
         header h1 {
-            font-size: 3.2rem;
-            margin-bottom: 10px;
-            letter-spacing: 2px;
+            font-size: 3rem;
+            margin: 0 0 10px 0;
             text-transform: uppercase;
-            background: linear-gradient(45deg, var(--accent-green), var(--accent-blue));
+            letter-spacing: 2px;
+            background: linear-gradient(45deg, var(--color-wasm), var(--color-js));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         header p {
-            color: #86c232;
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin-top: 0;
+            color: #8b949e;
+            font-size: 1.1rem;
+            margin: 0;
         }
 
         .compatibility-box {
             display: none;
-            background-color: #721c24;
-            color: #f8d7da;
-            border: 1px solid #f5c6cb;
-            padding: 15px 25px;
+            background-color: rgba(248, 113, 113, 0.15);
+            border: 1px solid #f87171;
+            color: #fca5a5;
+            padding: 15px;
             border-radius: 8px;
-            margin-bottom: 30px;
-            max-width: 800px;
+            margin-bottom: 25px;
+            max-width: 900px;
             width: 90%;
             box-sizing: border-box;
             text-align: center;
+            font-size: 0.95rem;
             font-weight: bold;
         }
 
-        .container {
+        .grid-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            max-width: 1200px;
-            width: 95%;
-            padding: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            max-width: 1000px;
+            width: 90%;
+            padding: 10px;
             box-sizing: border-box;
         }
 
-        .card {
+        @media (max-width: 500px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .version-card {
             background-color: var(--card-bg);
-            border: 2px solid #2c3540;
+            border: 1px solid var(--border-color);
             border-radius: 12px;
-            padding: 25px;
-            text-align: center;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.6);
-            transition: transform 0.3s ease, border-color 0.3s ease;
+            padding: 30px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            transition: transform 0.2s ease, border-color 0.2s ease;
         }
 
-        .card:hover {
-            transform: translateY(-5px);
+        .version-card:hover {
+            transform: translateY(-4px);
         }
 
-        .card h2 {
-            margin-top: 0;
-            font-size: 1.6rem;
-            color: var(--text-title);
+        .card-188:hover { border-color: #58a6ff; }
+        .card-1122:hover { border-color: #d2a8ff; }
+
+        .version-card h2 {
+            margin: 0 0 15px 0;
+            font-size: 1.8rem;
+            color: var(--text-heading);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
         }
 
-        .card p {
+        .version-card p {
             font-size: 0.95rem;
             line-height: 1.6;
-            margin-bottom: 25px;
+            color: #8b949e;
+            margin: 0 0 25px 0;
             flex-grow: 1;
         }
 
-        /* Border Glow effects on hover */
-        .v188:hover { border-color: var(--accent-green); }
-        .v1122:hover { border-color: var(--accent-blue); }
-        .v152:hover { border-color: var(--accent-orange); }
-        .vserver:hover { border-color: var(--accent-purple); }
+        .button-group {
+            display: flex;
+            gap: 15px;
+        }
 
         .btn {
-            display: block;
+            flex: 1;
+            text-align: center;
             text-decoration: none;
-            padding: 12px 20px;
+            padding: 12px 10px;
             border-radius: 6px;
             font-weight: bold;
-            font-size: 1rem;
-            color: #fff;
-            transition: background-color 0.2s ease, transform 0.1s ease;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            font-size: 0.95rem;
+            color: #ffffff;
+            transition: filter 0.2s ease, transform 0.1s ease;
         }
 
         .btn:active {
             transform: scale(0.98);
         }
 
-        .btn-green { background-color: var(--accent-green); }
-        .btn-green:hover { background-color: #388e3c; }
+        .btn:hover {
+            filter: brightness(1.15);
+        }
 
-        .btn-blue { background-color: var(--accent-blue); }
-        .btn-blue:hover { background-color: #0097a7; }
+        .btn-wasm {
+            background-color: #238636;
+            border: 1px solid rgba(240,246,252,0.1);
+        }
 
-        .btn-orange { background-color: var(--accent-orange); }
-        .btn-orange:hover { background-color: #f57c00; }
-
-        .btn-purple { background-color: var(--accent-purple); }
-        .btn-purple:hover { background-color: #7b1fa2; }
+        .btn-js {
+            background-color: #21262d;
+            border: 1px solid var(--border-color);
+            color: #c9d1d9;
+        }
 
         footer {
-            margin: 50px 0 30px 0;
-            color: #4f5d73;
-            font-size: 0.9rem;
+            margin-top: 60px;
+            margin-bottom: 30px;
+            font-size: 0.85rem;
+            color: #484f58;
             text-align: center;
         }
     </style>
@@ -154,66 +165,56 @@
 
     <header>
         <h1>akzzka1 Arcade</h1>
-        <p>Direct Browser Deployment Node</p>
+        <p>Deployment Portal Cluster</p>
     </header>
 
-    <!-- Automated alert bar for older systems -->
-    <div id="compat-alert" class="compatibility-box">
-        ⚠️ ALERT: Your browser does not appear to support WASM-GC or JSPI natively. Modern clients might freeze or throw error screens. Please use an updated version of Google Chrome or Microsoft Edge.
+    <!-- Auto JSPI Verification Node -->
+    <div id="runtime-alert" class="compatibility-box">
+        ⚠️ CONFIGURATION NOTICE: Your active browser client lacks native WASM-GC or JSPI support layers. If you launch a WebAssembly variant, it may stall. Use the standard JavaScript fallbacks if your system encounters a loading freeze.
     </div>
 
-    <div class="container">
-        <!-- 1. 1.8.8 Client Card -->
-        <div class="card v188">
+    <div class="grid-container">
+        
+        <!-- 1.8.8 Engine Block -->
+        <div class="version-card card-188">
             <div>
                 <h2>EaglercraftX 1.8.8</h2>
-                <p>The definitive gold standard for browser execution. Highly stable deployment optimized for high framerates, custom skins, voice chat, and access to all massive multiplayer PvP/Bedwars networks.</p>
+                <p>The definitive stable environment for multiplayer networks, Bedwars lobbies, and custom skin assets. Features full integration for WebRTC real-time voice communication channels.</p>
             </div>
-            <a href="./1.8.8/index.html" class="btn btn-green">Launch Client 1.8.8</a>
+            <div class="button-group">
+                <a href="./1.8.8-wasm/index.html" class="btn btn-wasm">Launch WASM-GC (Smooth)</a>
+                <a href="./1.8.8-js/index.html" class="btn btn-js">Launch Java/JS (Legacy)</a>
+            </div>
         </div>
 
-        <!-- 2. 1.12.2 Client Card -->
-        <div class="card v1122">
+        <!-- 1.12.2 Engine Block -->
+        <div class="version-card card-1122">
             <div>
                 <h2>Eaglercraft 1.12.2</h2>
-                <p>Advanced feature variant running modern survival systems. Includes dual-wielding shields, Elytra, shulker boxes, and structural concrete blocks. Demands a modern web engine via WASM-GC runtime.</p>
+                <p>Advanced feature set containing modern survival components: Elytras, shulker boxes, off-hand combat shield tracking, and concrete block styles. Note: Standard Java/JS build has heavy simulation latency.</p>
             </div>
-            <a href="./1.12.2/index.html" class="btn btn-blue">Launch Client 1.12.2</a>
+            <div class="button-group">
+                <a href="./1.12.2-wasm/index.html" class="btn btn-wasm">Launch WASM-GC (Fine)</a>
+                <a href="./1.12.2-js/index.html" class="btn btn-js">Launch Java/JS (Laggy)</a>
+            </div>
         </div>
 
-        <!-- 3. 1.5.2 Client Card -->
-        <div class="card v152">
-            <div>
-                <h2>Eaglercraft 1.5.2</h2>
-                <p>The original retro legacy build. Extremely lightweight footprint requiring minimal hardware resources. Perfect fallback utility for restricted networks and low-spec vintage Chromebook models.</p>
-            </div>
-            <a href="./1.5.2/index.html" class="btn btn-orange">Launch Client 1.5.2</a>
-        </div>
-
-        <!-- 4. EaglerXServer Tool Card -->
-        <div class="card vserver">
-            <div>
-                <h2>EaglerXServer Node</h2>
-                <p>Spigot, BungeeCord, and Velocity network proxy plugin. Link this repository engine to your desktop PC Java server software setup to allow web browser visitors to connect directly to your custom worlds.</p>
-            </div>
-            <a href="https://github." target="_blank" class="btn btn-purple">Get Server Plugin</a>
-        </div>
     </div>
 
     <footer>
-        &copy; 2026 akzzka1 Arcade. Securely Hosted via GitHub Pages. Ensure in-game V-Sync remains active.
+        &copy; 2026 akzzka1. Distributed Architecture Powered by GitHub Pages. Keep client V-Sync enabled.
     </footer>
 
     <script>
-        // Automated environment validation check
+        // Automatic runtime architecture validation logic
         window.addEventListener('DOMContentLoaded', () => {
             try {
-                const hasWasm = typeof WebAssembly === "object" && typeof WebAssembly.validate === "function";
-                if (!hasWasm) {
-                    document.getElementById('compat-alert').style.display = 'block';
+                const supportsWasm = typeof WebAssembly === "object" && typeof WebAssembly.validate === "function";
+                if (!supportsWasm) {
+                    document.getElementById('runtime-alert').style.display = 'block';
                 }
-            } catch (e) {
-                document.getElementById('compat-alert').style.display = 'block';
+            } catch (err) {
+                document.getElementById('runtime-alert').style.display = 'block';
             }
         });
     </script>
